@@ -1,66 +1,91 @@
-
 <div class="main-div">
   <div class="card cad-xxl-stretch w-75">
     <div class="card-body">
       <ngx-datatable
-#mydatatable
-class="material"
-[headerHeight]="50"
-[columnMode]="ColumnMode.force"
-[footerHeight]="50"
-[rowHeight]="75"
-[limit]= "10"
-[rows]="data"
->
-
-<ngx-datatable-column name="ilName" [sortable]="false">
-  <ng-template ngx-datatable-header-template>
-    <span>İl adı</span>
-  </ng-template>
-  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" >
-    <span
-      title="Double click to edit"
-      (dblclick)="enableEdit(row,rowIndex,value)"
-      *ngIf="!editing[rowIndex]"
-    >
-      {{ row.il_name }}
-    </span>
-    <mat-form-field
-    *ngIf="editing[rowIndex]"
-
-    [style.width.%]="100"
-    >
-      <mat-label>İller</mat-label>
-      <mat-select (openedChange)="closeSelectIl($event)"  [placeholder]="'İl Seçiniz'"  required [(ngModel)]="row.il_id" (selectionChange)="ilChangeSelected($event.value, row,value)"
+        #mydatatable
+        class="material"
+        [headerHeight]="50"
+        [columnMode]="ColumnMode.force"
+        [footerHeight]="50"
+        [rowHeight]="75"
+        [limit]="10"
+        [rows]="data"
       >
-        <input class="w-100 p-5 border border-transparent sticky"
-        (keydown.enter)="$event.preventDefault()"
-        (keyup)="onKeyIl($event.target)"
-        (keydown)="$event.stopPropagation()"
-        >
-        <mat-option> Sıfırla</mat-option>
+        <ngx-datatable-column name="ilName" [sortable]="false">
+          <ng-template ngx-datatable-header-template>
+            <span>İl adı</span>
+          </ng-template>
+          <ng-template
+            ngx-datatable-cell-template
+            let-rowIndex="rowIndex"
+            let-row="row"
+          >
+            <span
+              title="Double click to edit"
+              (dblclick)="enableEdit(row, rowIndex)"
+              *ngIf="!editing[rowIndex]"
+            >
+              {{ row.il_name }}
+            </span>
+            <mat-form-field *ngIf="editing[rowIndex]" [style.width.%]="100">
+              <mat-label>İller</mat-label>
+              <mat-select
+                (openedChange)="closeSelectIl($event)"
+                [placeholder]="'İl Seçiniz'"
+                required
+                [(ngModel)]="row.il_id"
+                (selectionChange)="ilChangeSelected($event.value, rowIndex)"
+              >
+                <input
+                  class="w-100 p-5 border border-transparent sticky"
+                  (keydown.enter)="$event.preventDefault()"
+                  (keyup)="onKeyIl($event.target)"
+                  (keydown)="$event.stopPropagation()"
+                />
+                <mat-option> Sıfırla</mat-option>
 
-        <mat-option *ngFor="let temp of ilData" [value]="temp.id" [class.hide-select]="ilSearchText !== '' && temp.name.toLocaleUpperCase('tr-TR').indexOf(ilSearchText.toLocaleUpperCase('tr-TR')) === -1">{{temp.name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </ng-template>
-</ngx-datatable-column>
-<ngx-datatable-column name="ilceId" [sortable]="false">
-  <ng-template ngx-datatable-header-template>
-    <span>İlçe kodu</span>
-  </ng-template>
-  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" >
-    <span
-      title="Double click to edit"
-      (dblclick)="enableEdit(row,rowIndex,value)"
-      *ngIf="!editing[rowIndex]"
-    >
-    {{row.id}}
+                <mat-option
+                  *ngFor="let temp of ilData"
+                  [value]="temp.id"
+                  [class.hide-select]="
+                    ilSearchText !== '' &&
+                    temp.name
+                      .toLocaleUpperCase('tr-TR')
+                      .indexOf(ilSearchText.toLocaleUpperCase('tr-TR')) === -1
+                  "
+                  >{{ temp.name }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="ilceId" [sortable]="false">
+          <ng-template ngx-datatable-header-template>
+            <span>İlçe kodu</span>
+          </ng-template>
+          <ng-template
+            ngx-datatable-cell-template
+            let-rowIndex="rowIndex"
+            let-row="row"
+          >
+            <span
+              title="Double click to edit"
+              (dblclick)="enableEdit(row, rowIndex)"
+              *ngIf="!editing[rowIndex]"
+            >
+              {{ row.id }}
+            </span>
+            <div *ngIf="editing[rowIndex]">
+              <input
+                type="number"
+                (keydown.enter)="$event.preventDefault()"
+                matInput
+                placeholder=""
+                [(ngModel)]="row.id"
+              />
 
-    </span>
-    <div *ngIf="editing[rowIndex]">
-      <!-- <mat-select (openedChange)="closeSelectWorkTemp($event)"  [(ngModel)]="row.workTemplate.workTemplateId" (selectionChange)="shiftChangeSelected($event.value, row,value)" -->
-      <!-- <mat-form-field [style.width.%]="100" *ngIf="editing[rowIndex]" class="d-flex align-items-center">
+              <!-- <mat-select (openedChange)="closeSelectWorkTemp($event)"  [(ngModel)]="row.workTemplate.workTemplateId" (selectionChange)="shiftChangeSelected($event.value, row,value)" -->
+              <!-- <mat-form-field [style.width.%]="100" *ngIf="editing[rowIndex]" class="d-flex align-items-center">
         <mat-label>Organizasyon</mat-label>
 
         <mat-select (openedChange)="closeSelectUnit($event)" [placeholder]="'Hedef Organizasyon Seçiniz'" required [(ngModel)]="row.targetUnitParent.id" (selectionChange)="targetUnitChangeSelected($event.value,row,value)">
@@ -73,52 +98,81 @@ class="material"
           <mat-option *ngFor="let unit of units" [class.hide-select]="targetUnitTextInput !== '' && unit.unitParentName.toLocaleUpperCase('tr-TR').indexOf(targetUnitTextInput.toLocaleUpperCase('tr-TR')) === -1" [value]="unit.unitParentId">{{unit.unitParentName}}</mat-option>
         </mat-select>
       </mat-form-field> -->
-
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="ilce" [sortable]="false">
+          <ng-template ngx-datatable-header-template>
+            <span>İlçe Adı</span>
+          </ng-template>
+          <ng-template
+            ngx-datatable-cell-template
+            let-rowIndex="rowIndex"
+            let-row="row"
+          >
+            <span
+              title="Double click to edit"
+              (dblclick)="enableEdit(row, rowIndex)"
+              *ngIf="!editing[rowIndex]"
+            >
+              {{ row.name }}
+            </span>
+            <div *ngIf="editing[rowIndex]">
+              <input
+                type="text"
+                (keydown.enter)="$event.preventDefault()"
+                matInput
+                placeholder=""
+                [(ngModel)]="row.name"
+              />
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="action" [sortable]="false">
+          <ng-template ngx-datatable-header-template>
+            <span>Aksiyon</span>
+          </ng-template>
+          <ng-template
+            ngx-datatable-cell-template
+            let-rowIndex="rowIndex"
+            let-row="row"
+          >
+            <button
+              type="submit"
+              class="btn btn-outline-primary"
+              *ngIf="!editing[rowIndex]"
+              (click)="enableEdit(row, rowIndex)"
+            >
+              Düzenle
+            </button>
+            <div *ngIf="editing[rowIndex]">
+              <button
+                type="button"
+                class="btn btn-outline-danger me-3"
+                (click)="onCancel(rowIndex)"
+              >
+                İptal
+              </button>
+              <button
+                type="submit"
+                class="btn btn-outline-success"
+                (click)="onSave(row, rowIndex)"
+              >
+                Kaydet
+              </button>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
     </div>
-  </ng-template>
-</ngx-datatable-column>
-<ngx-datatable-column name="ilce" [sortable]="false">
-  <ng-template ngx-datatable-header-template>
-    <span>İlçe Adı</span>
-  </ng-template>
-  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" >
-    <span
-      title="Double click to edit"
-      (dblclick)="enableEdit(row,rowIndex,value)"
-      *ngIf="!editing[rowIndex]"
-    >
-    {{row.name}}
-    </span>
-    <div *ngIf="editing[rowIndex]">
-      <!-- <mat-form-field *ngIf="editing[rowIndex]" class="d-flex align-items-center">
-        <mat-label>Off Day</mat-label>
-          <mat-select (openedChange)="closeSelectOff($event)" [placeholder]="'Off Day Seçiniz'" multiple [(ngModel)]="row.offDays"  required (selectionChange)="offDayChangeSelected($event.value,row,value)">
-          <mat-option *ngFor="let offDay of offDayList" [class.hide-select]=""[value]="offDay">{{offDay.name}}</mat-option>
-
-        </mat-select>
-      </mat-form-field> -->
-
-    </div>
-  </ng-template>
-</ngx-datatable-column>
-<ngx-datatable-column name="action" [sortable]="false">
-  <ng-template ngx-datatable-header-template>
-    <span>Aksiyon</span>
-  </ng-template>
-  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row" >
-    <div *ngIf="editing[rowIndex]">
-      <!-- <mat-form-field *ngIf="editing[rowIndex]" class="d-flex align-items-center">
-        <mat-label>Off Day</mat-label>
-          <mat-select (openedChange)="closeSelectOff($event)" [placeholder]="'Off Day Seçiniz'" multiple [(ngModel)]="row.offDays"  required (selectionChange)="offDayChangeSelected($event.value,row,value)">
-          <mat-option *ngFor="let offDay of offDayList" [class.hide-select]=""[value]="offDay">{{offDay.name}}</mat-option>
-
-        </mat-select>
-      </mat-form-field> -->
-
-    </div>
-  </ng-template>
-</ngx-datatable-column>
-</ngx-datatable>
+    <div class="card-footer d-flex justify-content-end">
+      <button
+        type="submit"
+        class="btn btn-outline-success"
+        (click)="onSaveAll()"
+      >
+        Toplu Kaydet
+      </button>
     </div>
   </div>
 </div>

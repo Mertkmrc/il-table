@@ -7,6 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     MatSelectModule,
     FormsModule,
+    MatInputModule,
     NgxDatatableModule,
     HttpClientModule,
     AppRoutingModule,
