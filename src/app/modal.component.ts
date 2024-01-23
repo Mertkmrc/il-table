@@ -8,7 +8,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
   standalone: true,
   template: `
     <div class="modal-header">
-      <h4 class="modal-title">Hi there!</h4>
+      <h4 class="modal-title">Değişen objeler</h4>
     </div>
     <div class="modal-body">
       <p *ngIf="data.length > 0">{{ data | json }}</p>
